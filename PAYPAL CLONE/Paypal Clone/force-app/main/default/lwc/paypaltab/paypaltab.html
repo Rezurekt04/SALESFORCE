@@ -1,0 +1,316 @@
+<template>
+    <lightning-card class="MainCard">
+        <div slot="title">
+            <img src={icon} class="logo">
+            <p style="padding-left:2px;padding-top:5px;float:right;color:white">Paypal</p>
+        </div>
+        <div class="slds-grid slds-gutters" style="height: 750px;">
+            <div class="slds-col slds-size_7-of-8" style="overflow: hidden;">
+                <lightning-tabset variant="vertical">
+                    <lightning-tab label="Users" style="height: 755px; overflow:auto">
+                        <lightning-card icon-name="standard:people">
+                            <p slot="title" style="color: white;">Paypal Users</p>
+                            <lightning-button slot="actions" label="New" variant="success" style="margin-right: 5px;" onclick={newUser}> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeleteUserSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                data={wiredUsers}
+                                columns={userColumns}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                        <canvas class="users"></canvas>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Passbooks" style=" height: 755px;  overflow:auto">
+                        <lightning-card icon-name="standard:pricebook">
+                            <p slot="title" style="color: white;">Paypal Passbooks</p>
+                            <lightning-button onclick={newPass} class="passbooks" slot="actions" label="New" variant="success" style="margin-right: 5px;"> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeletePassbooksSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                class="passbooks"
+                                data={wiredPassbooks}
+                                columns={passbookColumns}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                    <c-passbook-chart></c-passbook-chart>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Wallets" style=" height: 755px;  overflow:auto">
+                        <lightning-card icon-name="standard:pricebook">
+                            <p slot="title" style="color: white;">Paypal Wallets</p>
+                            <lightning-button onclick={newWallet} class="wallets" slot="actions" label="New" variant="success" style="margin-right: 5px;"> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeleteWalletsSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                class="wallets"
+                                data={wiredWallets}
+                                columns={walletColumns}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                    <c-wallet-chart></c-wallet-chart>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Pals" style=" height: 755px;  overflow:auto">
+                        <lightning-card icon-name="standard:pricebook">
+                            <p slot="title" style="color: white;">Paypal Pals</p>
+                            <lightning-button onclick={newPal} class="pals" slot="actions" label="New" variant="success" style="margin-right: 5px;"> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeletePalsSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                class="pals"
+                                data={wiredPals}
+                                columns={palsColumns}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                    <c-pals-chart></c-pals-chart>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Bills" style="height: 755px;  overflow:auto">
+                        <lightning-card icon-name="standard:pricebook">
+                            <p slot="title" style="color: white;">Paypal Bills</p>
+                            <lightning-button onclick={newBill} class="bills" slot="actions" label="New" variant="success" style="margin-right: 5px;"> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeleteBillsSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                class="bills"
+                                data={wiredBills}
+                                columns={billsColumn}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                    <c-bills-chart></c-bills-chart>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Cards" style="height: 755px;  overflow:auto">
+                        <lightning-card icon-name="standard:pricebook">
+                            <p slot="title" style="color: white;">Paypal Cards</p>
+                            <lightning-button onclick={newCard} class="cards" slot="actions" label="New" variant="success" style="margin-right: 5px;"> </lightning-button>
+                            <lightning-button slot="actions" label="Delete" variant="destructive" onclick={handleDeleteCardsSelected}> </lightning-button>
+                            <div style="height: 300px; width: inherit;">
+                                <lightning-datatable
+                                class="cards"
+                                data={wiredCards}
+                                columns={cardsColumn}
+                                key-field="id"
+                                onrowaction={handleUserRowActions}
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </lightning-card>
+                        <div class="slds-grid slds-gutters" style="height: 300px;">
+                            <div class="slds-col slds-size_1-of-2" style="margin-left:5px;">
+                                <lightning-card>
+                                    <div style="height: 340px; padding-bottom:5px; background-color:black">
+                                        <img style="height: 340px; width: 100%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFexwymC_fH-RaMw3kyrONM5VodLxsqmh8UQ&usqp=CAU">
+                                    </div>
+                                </lightning-card>
+                            </div>
+                            <div class="slds-col" style="margin-left:5px">
+                                <lightning-card>
+                                    <div class="chart" style="height:340px; background-color:white">
+                                    <c-cards-chart></c-cards-chart>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+            <div class="slds-col" style="margin-right:5px; overflow:hidden;">
+                <lightning-card style="--slds-c-card-color-background:#169BD7;">
+                    <p slot="title" style="color:white">User Activities</p>
+                    <div style="height:800px; background-color:white;">
+                        <lightning-card style="--slds-c-card-color-background:white;" >
+                            <div style="margin-left: 5px; margin-right:5px;">
+                                <template for:each={wiredUserActivities} for:item="activity">
+                                    <div key={activity.Assign}>
+                                        <lightning-card style="--slds-c-card-color-background:#253B80;">
+                                            <div slot="title" style="color: white;">
+                                                <lightning-icon style="margin-bottom: 10px;" icon-name={activity.Icon} size="x-small" alternative-text="Approved"> </lightning-icon>
+                                                <p style="float: right; padding-left:5px; padding-bottom:10px;">{activity.Type}</p>
+                                            </div>
+                                            <div style="border-style: groove;padding-left:5px;background-color: white;">
+                                                <lightning-formatted-text value={activity.UserName}></lightning-formatted-text>
+                                                <br>
+                                                <lightning-formatted-text value={activity.Assign}></lightning-formatted-text>
+                                                <br>
+                                                <lightning-formatted-text value={activity.Description}></lightning-formatted-text>
+                                            </div>
+                                        </lightning-card>
+                                    </div>
+                                </template>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
+    </lightning-card>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{Title}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-record-form object-api-name={objectName}
+                    fields={myfields}
+                    oncancel={closeModal}
+                    onsuccess={submitDetails}
+                    >
+                    </lightning-record-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isShowDetailsOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{Title}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={viewMode}>
+                        <lightning-record-view-form
+                        object-api-name={objectName}
+                        record-id={recordId}
+                        >
+                            <template for:each={viewFields} for:item="field">
+                            <div key={field.Id}>
+                                <lightning-output-field field-name={field.Name}></lightning-output-field>
+                            </div>
+                            </template>
+                            <lightning-button label="Edit" style="margin-left:40%;" onclick={showEditForm}></lightning-button>
+                            <lightning-button label="Cancel" onclick={closeModal} style="padding-left:5px"></lightning-button>
+                        </lightning-record-view-form>
+                    </template>
+                    <template if:false={viewMode}>
+                            <lightning-record-edit-form
+                            object-api-name={objectName}
+                            record-id={recordId}
+                            >
+                                <template for:each={viewFields} for:item="field">
+                                    <div key={field.Id}>
+                                        <lightning-input-field field-name={field.Name} required="true"></lightning-input-field>
+                                    </div>
+                                    </template>
+                                <lightning-button label="Save" style="margin-left:40%;" onclick={handleRecordUpdate} ></lightning-button>
+                                <lightning-button label="Cancel" onclick={closeModal} style="padding-left:5px"></lightning-button>
+                            </lightning-record-edit-form>
+                    </template>
+                </div>
+                
+            </div>
+            
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+    
+</template>

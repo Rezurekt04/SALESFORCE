@@ -1,0 +1,8 @@
+:host .MainCard{
+    --slds-c-card-color-background: #253B80;
+}
+
+:host .logo{
+    height: 25px;
+    width: 25px;
+}
