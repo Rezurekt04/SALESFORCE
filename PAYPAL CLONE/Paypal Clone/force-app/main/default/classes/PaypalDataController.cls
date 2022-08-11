@@ -1,43 +1,91 @@
 public class PaypalDataController {
     @AuraEnabled(cacheable = true)
     public static List<Users__c> PaypalUsers() {
-        return [SELECT Id,Name,User_Account__r.Name,Email__c,Mobile_Number__c FROM Users__c];
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,User_Account__r.Name,Email__c,Mobile_Number__c FROM Users__c WHERE OwnerId =: UserInfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,User_Account__r.Name,Email__c,Mobile_Number__c FROM Users__c];
+        }
+        
     }
     
     @AuraEnabled(cacheable = true)
     public static List<Event> GetUserActivity()
     {
-        System.debug('dadada');
         return [SELECt What.Name,Description,Owner.Name,Subject FROM Event Order By What.Name];
     }        
     
     @AuraEnabled(cacheable = true)
     public static List<Passbook__c> PassbookList()
     {
-        return [SELECT Id,Name,Expense_Description__c,Amount__c,Comments__c,Date_Time__c,User__r.Name FROM Passbook__c];
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,Expense_Description__c,Amount__c,Comments__c,Date_Time__c,User__r.Name,Flagged__c FROM Passbook__c WHERE OwnerID =: UserInfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,Expense_Description__c,Amount__c,Comments__c,Date_Time__c,User__r.Name,Flagged__c FROM Passbook__c];
+        }
+        
     }
     
     @AuraEnabled(cacheable = true)
     public static List<Wallet__c> WalletList()
     {
-        return [SELECT Id,Name,Balance__c,Added_From__c,Date_Time__c FROM Wallet__c];
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,Balance__c,Added_From__c,Date_Time__c FROM Wallet__c WHERE OwnerID =: UserInfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,Balance__c,Added_From__c,Date_Time__c FROM Wallet__c];
+        }
+        
     }
     
     @AuraEnabled(cacheable = true)
     public static List<Pals__c> PalsList()
-    {
-        return [SELECT Id,Name,Paypal_User__r.Name,Type__c FROM Pals__c];
+    {	
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,Paypal_User__r.Name,Type__c FROM Pals__c Where OwnerId =: userinfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,Paypal_User__r.Name,Type__c FROM Pals__c];
+        }
+        
     }
     @AuraEnabled(cacheable = true)
     public static List<Bills__c> BillList()
     {
-        return [SELECT Id,Name,Location__c,Category__c,Amount__c,Offer_Applied__c,Pay_Before__c,Paid_Status__c,For_User__r.Name FROM Bills__c];
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,Location__c,Category__c,Amount__c,Offer_Applied__c,Pay_Before__c,Paid_Status__c,For_User__r.Name FROM Bills__c WHERE OwnerId =: UserInfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,Location__c,Category__c,Amount__c,Offer_Applied__c,Pay_Before__c,Paid_Status__c,For_User__r.Name FROM Bills__c];
+        }
+        
     }
     
     @AuraEnabled(cacheable = true)
     public static List<Cards__c> CardList()
-    {
-        return [SELECT Id,Name,Card_Name__r.Name,Expiry_Date__c,Card_Number__c,CVV__c,Total_Spendings__c FROM Cards__c];
+    {        
+        Id profileId = '00e5h000000hXl3';
+        if(UserInfo.getProfileId() == profileId)
+        {
+            return [SELECT Id,Name,Card_Name__r.Name,Expiry_Date__c,Card_Number__c,CVV__c,Total_Spendings__c FROM Cards__c WHERE OwnerId =: UserInfo.getUserId()];
+        }else
+        {
+            return [SELECT Id,Name,Card_Name__r.Name,Expiry_Date__c,Card_Number__c,CVV__c,Total_Spendings__c FROM Cards__c];
+        }
+        
+        
     }
     
     @AuraEnabled(cacheable = true)
@@ -90,4 +138,6 @@ public class PaypalDataController {
         system.debug(sObjName);
         return sObjName;
     }
+    
+
 }

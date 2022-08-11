@@ -20,6 +20,7 @@ import WalletObject from '@salesforce/schema/Wallet__c';
 import WalletBalance from '@salesforce/schema/Wallet__c.Balance__c';
 import WalletAdded from '@salesforce/schema/Wallet__c.Added_From__c';
 import WalletDate from '@salesforce/schema/Wallet__c.Date_Time__c';
+import WalletUser from '@salesforce/schema/Wallet__c.User__c';
 //pals
 import PalObject from '@salesforce/schema/Pals__c';
 import PalUser from '@salesforce/schema/Pals__c.Paypal_User__c';
@@ -52,7 +53,6 @@ import WalletList from '@salesforce/apex/PaypalDataController.WalletList';
 import PalsList from '@salesforce/apex/PaypalDataController.PalsList';
 import BillsList from '@salesforce/apex/PaypalDataController.BillList';
 import CardsList from '@salesforce/apex/PaypalDataController.CardList';
-import ObjName from '@salesforce/apex/PaypalDataController.getApiName';
 
 //List for RightColumn
 import userActivityList from '@salesforce/apex/PaypalDataController.GetUserActivity';
@@ -73,6 +73,9 @@ import { deleteRecord } from 'lightning/uiRecordApi';
 import chartjs from "@salesforce/resourceUrl/ChartJS1";
 import { loadScript } from "lightning/platformResourceLoader";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+
+//actions and datacolumns
+//admin
 const actions = [
     { label: 'Show details', name: 'show_details' },
     { label: 'Delete', name: 'delete' }
@@ -147,8 +150,15 @@ const CardsField = [
     {label:'Total Spendings', fieldName: 'Total_Spendings__c', type:'text'},
     { type: 'action', typeAttributes: { rowActions: cardsActions, menuAlignment: 'auto' } }
 ];
+//customerAction
+const customerUserActions = [
+    { label: 'Show details', name: 'show_details' },
+    { label: 'Delete', name: 'delete' }
+];
+
+
+
 export default class Paypaltab extends LightningElement {
-    //combobox
 
     //icon
     icon = paypalIcon;
@@ -995,6 +1005,7 @@ export default class Paypaltab extends LightningElement {
             Id: 3,
             Name: WalletDate
         },
+
     ];
     //palsFields
     palFields = [
@@ -1140,7 +1151,6 @@ export default class Paypaltab extends LightningElement {
     {
         this.viewMode = false;
     }
-    
     handleRecordUpdate(event)
     {
         const fields = event.detail.fields;
@@ -1250,7 +1260,7 @@ export default class Paypaltab extends LightningElement {
     }
     newWallet()
     {
-        const walletFormFields = [WalletBalance,WalletAdded,WalletDate];
+        const walletFormFields = [WalletBalance,WalletAdded,WalletDate,WalletUser];
         this.Title = 'New Wallet';
         this.myfields = walletFormFields;
         this.objectName = this.walletObject;
@@ -1302,7 +1312,7 @@ export default class Paypaltab extends LightningElement {
     }
 
     @track customer = false;
-    //Customeror User
+    //CustomerORAdmin User
 
     renderedCallback() {
         const style = document.createElement('style');
